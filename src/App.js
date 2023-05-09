@@ -9,11 +9,11 @@ import { useAnimations } from '@react-three/drei';
 function Model({ modelUri }) {
   const group = useRef();
   const { scene, animations } = useLoader(GLTFLoader, modelUri);
-  const { actions, mixer } = useAnimations(animations, group.current);
-  
+  const { actions, mixer } = useAnimations(animations, group);
+
   useEffect(() => {
-    actions?.Animation?.play();
-  }, [mixer, actions]);
+    actions.Animation?.play();
+  }, [mixer]);
 
   return <primitive ref={group} object={scene} dispose={null} />;
 }
@@ -41,7 +41,7 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <ModelUploader onModelUpload={handleModelUpload} />
       <Canvas
         id={modelUri}
@@ -65,7 +65,7 @@ function App() {
         <OrbitControls />
       </Canvas>
       
-    </div>
+    </>
   );
 }
 
