@@ -32,6 +32,7 @@ function ModelUploader({ onModelUpload }) {
   return <input type="file" accept=".glb" onChange={handleFileUpload} />;
 }
 
+
 function App() {
   const [modelUri, setModelUri] = useState(null);
 
@@ -41,30 +42,32 @@ function App() {
 
   return (
     <div>
-      {modelUri ? (
-        <Canvas
-          id={modelUri}
-          dpr={1}
-          style={{ height: '100vh' }}
-          camera={{ fov: 10 }}
-        >
-          <PerformanceMonitor>
-            <pointLight color="white" intensity={1} position={[10, 10, 10]} />
-            <Suspense fallback={null}>
-              <Stage adjustCamera={false} intensity={0.6} shadows={false}>
-                <Bounds fit clip>
-                  <Model modelUri={modelUri} />
-                </Bounds>
-              </Stage>
-            </Suspense>
-          </PerformanceMonitor>
-          <OrbitControls />
-        </Canvas>
-      ) : (
-        <ModelUploader onModelUpload={handleModelUpload} />
-      )}
+      <ModelUploader onModelUpload={handleModelUpload} />
+      <Canvas
+        id={modelUri}
+        dpr={1}
+        style={{
+          height: '100vh',
+          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%)',
+        }}
+        camera={{ fov: 10 }}
+      >
+        <PerformanceMonitor>
+          <pointLight color="white" intensity={1} position={[10, 10, 10]} />
+          <Suspense fallback={null}>
+            <Stage adjustCamera={false} intensity={0.6} shadows={false}>
+              <Bounds fit clip>
+                {modelUri && <Model modelUri={modelUri} />}
+              </Bounds>
+            </Stage>
+          </Suspense>
+        </PerformanceMonitor>
+        <OrbitControls />
+      </Canvas>
+      
     </div>
   );
 }
+
 
 export default App;
